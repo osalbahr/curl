@@ -171,10 +171,10 @@ use File::Temp qw/ tempfile/;
 #######################################################################
 # Initialize configuration variables
 sub initserverconfig {
-    my ($fh, $socks) = tempfile("/tmp/sockXXXXXXXX");
+    my ($fh, $socks) = tempfile("/tmp/curl-socksd-XXXXXXXX");
     close($fh);
     unlink($socks);
-    my ($f2, $http) = tempfile("/tmp/httpXXXXXXXX");
+    my ($f2, $http) = tempfile("/tmp/curl-http-XXXXXXXX");
     close($f2);
     unlink($http);
     $SOCKSUNIXPATH = $socks; # SOCKS Unix domain socket
