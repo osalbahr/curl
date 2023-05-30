@@ -35,6 +35,7 @@
 #include "tool_cb_rea.h"
 #include "tool_operate.h"
 #include "tool_util.h"
+#include "tool_msgs.h"
 
 #include "memdebug.h" /* keep this as LAST include */
 
@@ -94,6 +95,10 @@ size_t tool_read_cb(char *buffer, size_t sz, size_t nmemb, void *userdata)
   if((per->uploadfilesize != -1) &&
      (per->uploadedsofar + rc > per->uploadfilesize)) {
     /* do not allow uploading more than originally set out to do */
+    curl_off_t delta = per->uploadedsofar + rc - per->uploadfilesize;
+    warnf(per->config->global, "File size larger in the end than when "
+          "started. Dropping at least %" CURL_FORMAT_CURL_OFF_T " bytes",
+          delta);
     rc = per->uploadfilesize - per->uploadedsofar;
   }
   config->readbusy = FALSE;
