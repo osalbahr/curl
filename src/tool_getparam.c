@@ -506,7 +506,7 @@ static ParameterError GetSizeParameter(struct GlobalConfig *global,
   curl_off_t value;
 
   if(curlx_strtoofft(arg, &unit, 10, &value)) {
-    warnf(global, "invalid number specified for %s\n", which);
+    warnf(global, "invalid number specified for %s", which);
     return PARAM_BAD_USE;
   }
 
@@ -539,7 +539,7 @@ static ParameterError GetSizeParameter(struct GlobalConfig *global,
     /* for plain bytes, leave as-is */
     break;
   default:
-    warnf(global, "unsupported %s unit. Use G, M, K or B!\n", which);
+    warnf(global, "unsupported %s unit. Use G, M, K or B!", which);
     return PARAM_BAD_USE;
   }
   *value_out = value;
@@ -666,7 +666,7 @@ static void sethttpver(struct GlobalConfig *global,
 {
   if(config->httpversion &&
      (config->httpversion != httpversion))
-    warnf(global, "Overrides previous HTTP version option\n");
+    warnf(global, "Overrides previous HTTP version option");
 
   config->httpversion = httpversion;
 }
@@ -793,7 +793,7 @@ ParameterError getparameter(const char *flag, /* f or -long-flag */
       if((aliases[hit].desc == ARG_FILENAME) &&
          (nextarg[0] == '-') && nextarg[1]) {
         /* if the file name looks like a command line option */
-        warnf(global, "The file name argument '%s' looks like a flag.\n",
+        warnf(global, "The file name argument '%s' looks like a flag.",
               nextarg);
       }
     }
@@ -862,11 +862,11 @@ ParameterError getparameter(const char *flag, /* f or -long-flag */
       case 'g': /* --trace */
         GetStr(&global->trace_dump, nextarg);
         if(global->tracetype && (global->tracetype != TRACE_BIN))
-          warnf(global, "--trace overrides an earlier trace/verbose option\n");
+          warnf(global, "--trace overrides an earlier trace/verbose option");
         global->tracetype = TRACE_BIN;
         break;
       case 'G': /* --npn */
-        warnf(global, "--npn is no longer supported\n");
+        warnf(global, "--npn is no longer supported");
         break;
       case 'h': /* --trace-ascii */
         GetStr(&global->trace_dump, nextarg);
@@ -927,7 +927,7 @@ ParameterError getparameter(const char *flag, /* f or -long-flag */
             numerator = 24*60*60*1000;
             break;
           default:
-            errorf(global, "unsupported --rate unit\n");
+            errorf(global, "unsupported --rate unit");
             return PARAM_BAD_USE;
           }
         }
@@ -1333,7 +1333,7 @@ ParameterError getparameter(const char *flag, /* f or -long-flag */
         GetStr(&config->mail_auth, nextarg);
         break;
       case 'J': /* --metalink */
-        errorf(global, "--metalink is disabled\n");
+        errorf(global, "--metalink is disabled");
         return PARAM_BAD_USE;
       case '6': /* --sasl-authzid */
         GetStr(&config->sasl_authzid, nextarg);
@@ -1345,7 +1345,7 @@ ParameterError getparameter(const char *flag, /* f or -long-flag */
 #ifdef CURLDEBUG
         global->test_event_based = toggle;
 #else
-        warnf(global, "--test-event is ignored unless a debug build!\n");
+        warnf(global, "--test-event is ignored unless a debug build!");
 #endif
         break;
       case 'M': /* --unix-socket */
@@ -1488,11 +1488,11 @@ ParameterError getparameter(const char *flag, /* f or -long-flag */
       break;
     case '2':
       /* SSL version 2 */
-      warnf(global, "Ignores instruction to use SSLv2\n");
+      warnf(global, "Ignores instruction to use SSLv2");
       break;
     case '3':
       /* SSL version 3 */
-      warnf(global, "Ignores instruction to use SSLv3\n");
+      warnf(global, "Ignores instruction to use SSLv3");
       break;
     case '4':
       /* IPv4 */
@@ -1967,7 +1967,7 @@ ParameterError getparameter(const char *flag, /* f or -long-flag */
       }
       if(config->failonerror && config->failwithbody) {
         errorf(config->global, "You must select either --fail or "
-               "--fail-with-body, not both.\n");
+               "--fail-with-body, not both.");
         return PARAM_BAD_USE;
       }
       break;
@@ -2016,7 +2016,7 @@ ParameterError getparameter(const char *flag, /* f or -long-flag */
         bool use_stdin = !strcmp(&nextarg[1], "-");
         FILE *file = use_stdin?stdin:fopen(&nextarg[1], FOPEN_READTEXT);
         if(!file)
-          warnf(global, "Failed to open %s!\n", &nextarg[1]);
+          warnf(global, "Failed to open %s!", &nextarg[1]);
         else {
           err = file2memory(&string, &len, file);
           if(!err && string) {
@@ -2075,7 +2075,7 @@ ParameterError getparameter(const char *flag, /* f or -long-flag */
       break;
     case 'K': /* parse config file */
       if(parseconfig(nextarg, global)) {
-        errorf(global, "cannot read config from '%s'\n", nextarg);
+        errorf(global, "cannot read config from '%s'", nextarg);
         return PARAM_READ_ERROR;
       }
       break;
@@ -2172,7 +2172,7 @@ ParameterError getparameter(const char *flag, /* f or -long-flag */
       /* fill in the outfile */
       if('o' == letter) {
         if(!*nextarg) {
-          warnf(global, "output file name has no length\n");
+          warnf(global, "output file name has no length");
           return PARAM_BAD_USE;
         }
         GetStr(&url->outfile, nextarg);
@@ -2233,7 +2233,7 @@ ParameterError getparameter(const char *flag, /* f or -long-flag */
         char buffer[32];
         curl_off_t off;
         if(curlx_strtoofft(nextarg, NULL, 10, &off)) {
-          warnf(global, "unsupported range point\n");
+          warnf(global, "unsupported range point");
           return PARAM_BAD_USE;
         }
         warnf(global,
@@ -2533,7 +2533,7 @@ ParameterError parse_args(struct GlobalConfig *global, int argc,
               result = PARAM_NO_MEM;
           }
           else {
-            errorf(global, "missing URL before --next\n");
+            errorf(global, "missing URL before --next");
             result = PARAM_BAD_USE;
           }
         }

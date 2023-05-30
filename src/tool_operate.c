@@ -426,7 +426,7 @@ static CURLcode post_per_transfer(struct GlobalConfig *global,
   if(!result && config->xattr && outs->fopened && outs->stream) {
     int rc = fwrite_xattr(curl, per->this_url, fileno(outs->stream));
     if(rc)
-      warnf(config->global, "Error setting extended attributes on '%s': %s\n",
+      warnf(config->global, "Error setting extended attributes on '%s': %s",
             outs->filename, strerror(errno));
   }
 
@@ -642,7 +642,7 @@ noretry:
         fprintf(stderr, "curl: (%d) Failed writing body\n", result);
     }
     if(result && config->rm_partial) {
-      notef(global, "Removing output file: %s\n", outs->filename);
+      notef(global, "Removing output file: %s", outs->filename);
       unlink(outs->filename);
     }
   }
@@ -734,7 +734,7 @@ static CURLcode single_transfer(struct GlobalConfig *global,
         httpgetfields = state->httpgetfields = strdup(config->postfields);
         Curl_safefree(config->postfields);
         if(!httpgetfields) {
-          errorf(global, "out of memory\n");
+          errorf(global, "out of memory");
           result = CURLE_OUT_OF_MEMORY;
         }
         else if(SetHTTPrequest(config,
@@ -777,7 +777,7 @@ static CURLcode single_transfer(struct GlobalConfig *global,
       state->up = 0;
       if(!warn_more_options) {
         /* only show this once */
-        warnf(config->global, "Got more output options than URLs\n");
+        warnf(config->global, "Got more output options than URLs");
         warn_more_options = TRUE;
       }
       continue; /* next URL please */
@@ -787,7 +787,7 @@ static CURLcode single_transfer(struct GlobalConfig *global,
     if(urlnode->outfile && !state->outfiles) {
       state->outfiles = strdup(urlnode->outfile);
       if(!state->outfiles) {
-        errorf(global, "out of memory\n");
+        errorf(global, "out of memory");
         result = CURLE_OUT_OF_MEMORY;
         break;
       }
@@ -815,12 +815,12 @@ static CURLcode single_transfer(struct GlobalConfig *global,
           if(inglob) {
             result = glob_next_url(&state->uploadfile, inglob);
             if(result == CURLE_OUT_OF_MEMORY)
-              errorf(global, "out of memory\n");
+              errorf(global, "out of memory");
           }
           else if(!state->up) {
             state->uploadfile = strdup(infiles);
             if(!state->uploadfile) {
-              errorf(global, "out of memory\n");
+              errorf(global, "out of memory");
               result = CURLE_OUT_OF_MEMORY;
             }
           }
@@ -988,7 +988,7 @@ static CURLcode single_transfer(struct GlobalConfig *global,
             newfile = fopen(config->headerfile, "ab");
 
             if(!newfile) {
-              errorf(global, "Failed to open %s\n", config->headerfile);
+              errorf(global, "Failed to open %s", config->headerfile);
               result = CURLE_WRITE_ERROR;
               break;
             }
@@ -1059,7 +1059,7 @@ static CURLcode single_transfer(struct GlobalConfig *global,
               break;
             }
             if(!*per->outfile && !config->content_disposition) {
-              errorf(global, "Remote file name has no length!\n");
+              errorf(global, "Remote file name has no length!");
               result = CURLE_WRITE_ERROR;
               break;
             }
@@ -1071,11 +1071,11 @@ static CURLcode single_transfer(struct GlobalConfig *global,
             Curl_safefree(storefile);
             if(result) {
               /* bad globbing */
-              warnf(global, "bad output glob!\n");
+              warnf(global, "bad output glob!");
               break;
             }
             if(!*per->outfile) {
-              warnf(global, "output glob produces empty string!\n");
+              warnf(global, "output glob produces empty string!");
               result = CURLE_WRITE_ERROR;
               break;
             }
@@ -1130,7 +1130,7 @@ static CURLcode single_transfer(struct GlobalConfig *global,
             FILE *file = fopen(per->outfile, "ab");
 #endif
             if(!file) {
-              errorf(global, "Can't open '%s'!\n", per->outfile);
+              errorf(global, "Can't open '%s'", per->outfile);
               result = CURLE_WRITE_ERROR;
               break;
             }
@@ -1327,7 +1327,7 @@ static CURLcode single_transfer(struct GlobalConfig *global,
         my_setopt_str(curl, CURLOPT_PROXY, config->proxy);
 
         if(config->proxy && result) {
-          errorf(global, "proxy support is disabled in this libcurl\n");
+          errorf(global, "proxy support is disabled in this libcurl");
           config->synthetic_error = TRUE;
           result = CURLE_NOT_BUILT_IN;
           break;
@@ -1399,7 +1399,7 @@ static CURLcode single_transfer(struct GlobalConfig *global,
         switch(config->httpreq) {
         case HTTPREQ_SIMPLEPOST:
           if(config->resume_from) {
-            errorf(global, "cannot mix --continue-at with --data\n");
+            errorf(global, "cannot mix --continue-at with --data");
             result = CURLE_FAILED_INIT;
           }
           else {
@@ -1414,7 +1414,7 @@ static CURLcode single_transfer(struct GlobalConfig *global,
           curl_mime_free(config->mimepost);
           config->mimepost = NULL;
           if(config->resume_from) {
-            errorf(global, "cannot mix --continue-at with --form\n");
+            errorf(global, "cannot mix --continue-at with --form");
             result = CURLE_FAILED_INIT;
           }
           else {
@@ -1489,7 +1489,7 @@ static CURLcode single_transfer(struct GlobalConfig *global,
           my_setopt(curl, CURLOPT_HTTP09_ALLOWED,
                     config->http09_allowed ? 1L : 0L);
           if(result) {
-            errorf(global, "HTTP/0.9 is not supported in this build!\n");
+            errorf(global, "HTTP/0.9 is not supported in this build!");
             return result;
           }
 
@@ -1544,7 +1544,7 @@ static CURLcode single_transfer(struct GlobalConfig *global,
         if(config->capath) {
           result = res_setopt_str(curl, CURLOPT_CAPATH, config->capath);
           if(result == CURLE_NOT_BUILT_IN) {
-            warnf(global, "ignoring %s, not supported by libcurl\n",
+            warnf(global, "ignoring %s, not supported by libcurl",
                   capath_from_env?
                   "SSL_CERT_DIR environment variable":"--capath");
           }
@@ -2441,7 +2441,7 @@ static CURLcode serial_transfers(struct GlobalConfig *global,
   if(result)
     return result;
   if(!added) {
-    errorf(global, "no transfer performed\n");
+    errorf(global, "no transfer performed");
     return CURLE_READ_ERROR;
   }
   for(per = transfers; per;) {
@@ -2494,7 +2494,7 @@ static CURLcode serial_transfers(struct GlobalConfig *global,
          milliseconds */
       long milli = tvdiff(tvnow(), start);
       if(milli < global->ms_per_transfer) {
-        notef(global, "Transfer took %ld ms, waits %ldms as set by --rate\n",
+        notef(global, "Transfer took %ld ms, waits %ldms as set by --rate",
               milli, global->ms_per_transfer - milli);
         /* The transfer took less time than wanted. Wait a little. */
         tool_go_sleep(global->ms_per_transfer - milli);
@@ -2570,7 +2570,7 @@ static CURLcode transfer_per_config(struct GlobalConfig *global,
         if(!config->cacert) {
           curl_free(env);
           curl_easy_cleanup(curltls);
-          errorf(global, "out of memory\n");
+          errorf(global, "out of memory");
           return CURLE_OUT_OF_MEMORY;
         }
       }
@@ -2593,7 +2593,7 @@ static CURLcode transfer_per_config(struct GlobalConfig *global,
             if(!config->cacert) {
               curl_free(env);
               curl_easy_cleanup(curltls);
-              errorf(global, "out of memory\n");
+              errorf(global, "out of memory");
               return CURLE_OUT_OF_MEMORY;
             }
           }
@@ -2780,7 +2780,7 @@ CURLcode operate(struct GlobalConfig *global, int argc, argv_item_t argv[])
         }
       }
       else
-        errorf(global, "out of memory\n");
+        errorf(global, "out of memory");
     }
   }
 

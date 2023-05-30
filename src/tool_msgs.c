@@ -42,6 +42,7 @@ static void voutf(struct GlobalConfig *config,
                   va_list ap)
 {
   size_t width = (79 - strlen(prefix));
+  DEBUGASSERT(!strchr(fmt, '\n'));
   if(!config->silent) {
     size_t len;
     char *ptr;

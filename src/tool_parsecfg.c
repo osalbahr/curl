@@ -263,7 +263,7 @@ int parseconfig(const char *filename, struct GlobalConfig *global)
            res != PARAM_VERSION_INFO_REQUESTED &&
            res != PARAM_ENGINES_REQUESTED) {
           const char *reason = param2text(res);
-          warnf(operation->global, "%s:%d: warning: '%s' %s\n",
+          warnf(operation->global, "%s:%d: warning: '%s' %s",
                 filename, lineno, option, reason);
         }
       }

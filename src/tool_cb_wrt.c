@@ -62,14 +62,14 @@ bool tool_create_output_file(struct OutStruct *outs,
   DEBUGASSERT(config);
   global = config->global;
   if(!fname || !*fname) {
-    warnf(global, "Remote filename has no length!\n");
+    warnf(global, "Remote filename has no length!");
     return FALSE;
   }
 
   if(config->output_dir && outs->is_cd_filename) {
     aname = aprintf("%s/%s", config->output_dir, fname);
     if(!aname) {
-      errorf(global, "out of memory\n");
+      errorf(global, "out of memory");
       return FALSE;
     }
     fname = aname;
@@ -95,12 +95,12 @@ bool tool_create_output_file(struct OutStruct *outs,
       /* Guard against wraparound in new filename */
       if(newlen < len) {
         free(aname);
-        errorf(global, "overflow in filename generation\n");
+        errorf(global, "overflow in filename generation");
         return FALSE;
       }
       newname = malloc(newlen);
       if(!newname) {
-        errorf(global, "out of memory\n");
+        errorf(global, "out of memory");
         free(aname);
         return FALSE;
       }
@@ -133,7 +133,7 @@ bool tool_create_output_file(struct OutStruct *outs,
   }
 
   if(!file) {
-    warnf(global, "Failed to open the file %s: %s\n", fname,
+    warnf(global, "Failed to open the file %s: %s", fname,
           strerror(errno));
     free(aname);
     return FALSE;
@@ -182,7 +182,7 @@ size_t tool_write_cb(char *buffer, size_t sz, size_t nmemb, void *userdata)
   }
   else {
     if(bytes > (size_t)CURL_MAX_WRITE_SIZE) {
-      warnf(config->global, "Data size exceeds single call write limit!\n");
+      warnf(config->global, "Data size exceeds single call write limit!");
       return CURL_WRITEFUNC_ERROR;
     }
   }
@@ -211,7 +211,7 @@ size_t tool_write_cb(char *buffer, size_t sz, size_t nmemb, void *userdata)
         check_fails = TRUE;
     }
     if(check_fails) {
-      warnf(config->global, "Invalid output struct data for write callback\n");
+      warnf(config->global, "Invalid output struct data for write callback");
       return CURL_WRITEFUNC_ERROR;
     }
   }

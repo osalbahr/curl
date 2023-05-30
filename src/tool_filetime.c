@@ -55,7 +55,7 @@ curl_off_t getfiletime(const char *filename, struct GlobalConfig *global)
           | ((curl_off_t)ft.dwHighDateTime) << 32;
 
       if(converted < CURL_OFF_T_C(116444736000000000)) {
-        warnf(global, "Failed to get filetime: underflow\n");
+        warnf(global, "Failed to get filetime: underflow");
       }
       else {
         result = (converted - CURL_OFF_T_C(116444736000000000)) / 10000000;
@@ -79,7 +79,7 @@ curl_off_t getfiletime(const char *filename, struct GlobalConfig *global)
     result = (curl_off_t)statbuf.st_mtime;
   }
   else if(errno != ENOENT) {
-    warnf(global, "Failed to get filetime: %s\n", strerror(errno));
+    warnf(global, "Failed to get filetime: %s", strerror(errno));
   }
 #endif
   return result;
