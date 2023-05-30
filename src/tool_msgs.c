@@ -74,6 +74,7 @@ static void voutf(struct GlobalConfig *config,
       }
       else {
         fputs(ptr, stderr);
+        fputs("\n", stderr);
         len = 0;
       }
     }
