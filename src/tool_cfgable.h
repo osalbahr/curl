@@ -317,7 +317,7 @@ struct GlobalConfig {
   bool test_event_based;
 #endif
   bool parallel;
-  curl_off_t parallel_max;
+  unsigned short parallel_max; /* MAX_PARALLEL is the maximum */
   bool parallel_connect;
   char *help_category;            /* The help category, if set */
   struct OperationConfig *first;

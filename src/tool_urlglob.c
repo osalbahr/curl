@@ -123,7 +123,8 @@ static CURLcode glob_set(struct URLGlob *glob, char **patternp,
       *buf = '\0';
       if(pat->content.Set.elements) {
         char **new_arr = realloc(pat->content.Set.elements,
-                                 (pat->content.Set.size + 1) * sizeof(char *));
+                                 (size_t)(pat->content.Set.size + 1) *
+                                 sizeof(char *));
         if(!new_arr)
           return GLOBERROR("out of memory", 0, CURLE_OUT_OF_MEMORY);
 
